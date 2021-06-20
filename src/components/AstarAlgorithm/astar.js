@@ -6,6 +6,9 @@ function Astar(startnode, endNode) {
     let visitedNodes = []
 
     openSet.push(startnode)
+    startnode.g = 0;
+    startnode.h = herustic(startnode, endNode)
+    startnode.f = startnode.g + startnode.h
 
     while (openSet.length > 0) {
         let leastIndex = 0
@@ -21,6 +24,7 @@ function Astar(startnode, endNode) {
         visitedNodes.push(current)
 
         if (current === endNode) {
+            console.log("Path found!")
             let temp = current
             path.push(temp)
             while (temp.previous) {
@@ -55,7 +59,7 @@ function Astar(startnode, endNode) {
                 }
                 if (newPath) {
                     neighbour.h = herustic(neighbour, endNode)
-                    neighbour.f = neighbour.f + neighbour.g
+                    neighbour.f = neighbour.h + neighbour.g
                     neighbour.previous = current
                 }
             }

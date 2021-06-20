@@ -2,6 +2,7 @@
     width: 20px;
     height: 20px;
     border: 1px solid black;
+    background-color: rgb(152, 144, 228);
 }
 
 .node-start {
@@ -35,17 +36,17 @@
     }
 
     50% {
-        background-color: peachpuff;
+        background-color: rgb(99, 47, 182);
     }
 
     75% {
         transform: scale(1.2);
-        background-color: peachpuff;
+        background-color: rgb(99, 47, 182);
     }
 
     100% {
         transform: scale(1);
-        background-color: peachpuff;
+        background-color: rgb(99, 47, 182);
     }
 }
 
@@ -67,16 +68,16 @@
 @keyframes shortestPath {
     0% {
         transform: scale(0.6);
-        background-color: aquamarine;
+        background-color: rgb(241, 241, 195);
     }
 
     50% {
         transform: scale(1.2);
-        background-color: aquamarine;
+        background-color: rgb(209, 207, 100);
     }
 
     100% {
         transform: scale(1);
-        background-color: aquamarine;
+        background-color: rgb(245, 241, 27);
     }
 }

@@ -3,7 +3,7 @@ import Node from "./Node";
 import "./Pathfind.css";
 import Astar from './AstarAlgorithm/astar'
 
-const rows = 20, cols = 25;
+const rows = 25, cols = 60;
 
 const NODE_START_ROW = 0
 const NODE_START_COL = 0
@@ -14,6 +14,8 @@ const Pathfind = () => {
     const [Grid, setGrid] = useState([]);
     const [Path, setPath] = useState([])
     const [VisitedNodes, setVisitedNodes] = useState([])
+    const [startChange, setStartChange] = useState(false)
+
 
     useEffect(() => {
         initializeGrid();
@@ -30,11 +32,16 @@ const Pathfind = () => {
         addNeighbours(grid)
         const startNode = grid[NODE_START_ROW][NODE_START_COL]
         const endNode = grid[NODE_END_ROW][NODE_END_COL]
-        let path = Astar(startNode, endNode)
         startNode.isWall = false
         endNode.isWall = false
+        let path = Astar(startNode, endNode)
         setPath(path.path)
         setVisitedNodes(path.visitedNodes)
+        if (path.error) {
+            console.log("No path found")
+            return;
+        }
+        console.log(`Path length: ${path.path.length}`)
     };
 
     const createSpot = (grid) => {
@@ -61,9 +68,9 @@ const Pathfind = () => {
         this.y = j;
         this.isStart = (this.x === NODE_START_ROW && this.y === NODE_START_COL)
         this.isEnd = (this.x === NODE_END_ROW && this.y === NODE_END_COL)
-        this.g = 0;
-        this.f = 0;
-        this.h = 0;
+        this.g = Infinity;
+        this.f = Infinity;
+        this.h = Infinity;
         this.neighbours = [];
         this.isWall = false
         if (Math.random(1) < 0.2) {
@@ -73,8 +80,8 @@ const Pathfind = () => {
         this.addNeighbours = function (grid) {
             let i = this.x
             let j = this.y
-            if (i > 0) this.neighbours.push(grid[i - 1][j])
-            if (j > 0) this.neighbours.push(grid[i][j - 1])
+            if (i - 1 >= 0) this.neighbours.push(grid[i - 1][j])
+            if (j - 1 >= 0) this.neighbours.push(grid[i][j - 1])
             if (i + 1 < rows) this.neighbours.push(grid[i + 1][j])
             if (j + 1 < cols) this.neighbours.push(grid[i][j + 1])
         }
@@ -133,10 +140,16 @@ const Pathfind = () => {
     console.log(Path)
 
 
+    const moveStartHandler = () => {
+
+    }
+
 
     return (
         <div className="Wrapper">
             <button onClick={visualizePath}>Visualize path</button>
+            <button onClick={() => { window.location.reload() }}>Refresh</button>
+            <button onClick={moveStartHandler}>Change Start</button>
             <h1>Pathfind component</h1>
             {gridwithNode}
         </div>
