@@ -17,7 +17,7 @@ const Pathfind = () => {
     const [VisitedNodes, setVisitedNodes] = useState([])
     const [pathLen, setPathLen] = useState()
     const [traversed, setTraversed] = useState(false)
-    
+
     useEffect(() => {
         initializeGrid();
         setTraversed(false)
@@ -26,7 +26,7 @@ const Pathfind = () => {
 
     const initializeGrid = () => {
         const grid = new Array(rows);
-        
+
         for (let i = 0; i < rows; i++) {
             grid[i] = new Array(cols);
         }
@@ -37,8 +37,8 @@ const Pathfind = () => {
         const endNode = grid[NODE_END_ROW][NODE_END_COL]
         startNode.isWall = false
         endNode.isWall = false
-        // let path = Astar(startNode, endNode)
-        let path = bfs(startNode, endNode)
+        let path = Astar(startNode, endNode)
+        // let path = bfs(startNode, endNode)
         setTraversed(true)
         setPath(path.path)
         setVisitedNodes(path.visitedNodes)
@@ -126,9 +126,11 @@ const Pathfind = () => {
             }, 10 * i)
 
         }
+        setPathLen(shortestPathNodes.length)
     }
 
     const visualizePath = () => {
+
         for (let i = 0; i <= VisitedNodes.length; i++) {
             if (i === VisitedNodes.length) {
                 setTimeout(() => {
@@ -140,23 +142,19 @@ const Pathfind = () => {
                     document.getElementById(`node-${node.x}-${node.y}`).className = 'node node-visited'
                 }, 20 * i)
             }
-
         }
+        setTraversed(true)
+
     }
 
     console.log(Path)
 
 
-    const moveStartHandler = () => {
-
-    }
-
-
     return (
         <div className="Wrapper">
-            <button onClick={visualizePath}>Visualize path</button>
-            <button onClick={() => { window.location.reload() }}>Refresh</button>
-            <button onClick={moveStartHandler}>Change Start</button>
+            <button className='square_btn' onClick={() => { window.location.reload() }}>Refresh</button>
+            <button className='square_btn' onClick={visualizePath}>Visualize path</button>
+            {/* <button onClick={moveStartHandler}>Change Start</button> */}
             <h1>Pathfind component</h1>
             {gridwithNode}
             {traversed && pathLen && <h1>Path length: {pathLen}</h1>}

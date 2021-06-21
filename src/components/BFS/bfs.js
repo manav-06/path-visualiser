@@ -63,8 +63,6 @@ const bfs = (startNode, endNode) => {
         }
     }
     return { path, visitedNodes, error: "No path found" }
-
-
 }
 
 export default bfs
