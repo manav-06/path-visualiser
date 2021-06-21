@@ -1,5 +1,5 @@
 
-function Astar(startnode, endNode) {
+const Astar = (startnode, endNode) => {
     let openSet = []
     let closedSet = []
     let path = []

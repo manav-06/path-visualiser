@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import Node from "./Node";
 import "./Pathfind.css";
 import Astar from './AstarAlgorithm/astar'
+import bfs from './BFS/bfs'
 
-const rows = 25, cols = 60;
+const rows = 15, cols = 40;
 
 const NODE_START_ROW = 0
 const NODE_START_COL = 0
@@ -14,16 +15,18 @@ const Pathfind = () => {
     const [Grid, setGrid] = useState([]);
     const [Path, setPath] = useState([])
     const [VisitedNodes, setVisitedNodes] = useState([])
-    const [startChange, setStartChange] = useState(false)
-
-
+    const [pathLen, setPathLen] = useState()
+    const [traversed, setTraversed] = useState(false)
+    
     useEffect(() => {
         initializeGrid();
+        setTraversed(false)
+        setPathLen(null)
     }, []);
 
     const initializeGrid = () => {
         const grid = new Array(rows);
-
+        
         for (let i = 0; i < rows; i++) {
             grid[i] = new Array(cols);
         }
@@ -34,14 +37,18 @@ const Pathfind = () => {
         const endNode = grid[NODE_END_ROW][NODE_END_COL]
         startNode.isWall = false
         endNode.isWall = false
-        let path = Astar(startNode, endNode)
+        // let path = Astar(startNode, endNode)
+        let path = bfs(startNode, endNode)
+        setTraversed(true)
         setPath(path.path)
         setVisitedNodes(path.visitedNodes)
         if (path.error) {
             console.log("No path found")
+            setPathLen(null)
             return;
         }
-        console.log(`Path length: ${path.path.length}`)
+        setPathLen(path.path.length)
+
     };
 
     const createSpot = (grid) => {
@@ -152,6 +159,8 @@ const Pathfind = () => {
             <button onClick={moveStartHandler}>Change Start</button>
             <h1>Pathfind component</h1>
             {gridwithNode}
+            {traversed && pathLen && <h1>Path length: {pathLen}</h1>}
+            {traversed && !pathLen && <h1>No path found</h1>}
         </div>
     );
 };
