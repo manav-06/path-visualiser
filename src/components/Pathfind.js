@@ -1,20 +1,28 @@
 import React, { useState, useEffect } from "react";
 import Node from "./Node";
-import "./Pathfind.css";
+import "./PathFind.css";
 import Astar from './AstarAlgorithm/astar'
 import bfs from './BFS/bfs'
+import Dijkstra from './Dijkstra/dijkstra'
 
-const rows = 15, cols = 40;
+const rows = 8, cols = 35;
 
 const NODE_START_ROW = 0
 const NODE_START_COL = 0
 const NODE_END_ROW = rows - 1
 const NODE_END_COL = cols - 1
 
-const Pathfind = () => {
+const PathFind = () => {
+
+    const [disableButton, setDisableButton] = useState(false)
+    const [disableRefresh, setDisableRefresh] = useState(false)
     const [Grid, setGrid] = useState([]);
-    const [Path, setPath] = useState([])
-    const [VisitedNodes, setVisitedNodes] = useState([])
+    const [AstarPath, setAstarPath] = useState([])
+    const [BFSPath, setBFSPath] = useState([])
+    const [DijkstraPath, setDijkstraPath] = useState([])
+    const [AstarVisitedNodes, setAstarVisitedNodes] = useState([])
+    const [BFSVisitedNodes, setBFSVisitedNodes] = useState([])
+    const [DijkstraVisitedNodes, setDijkstraVisitedNodes] = useState([])
     const [pathLen, setPathLen] = useState()
     const [traversed, setTraversed] = useState(false)
 
@@ -37,17 +45,22 @@ const Pathfind = () => {
         const endNode = grid[NODE_END_ROW][NODE_END_COL]
         startNode.isWall = false
         endNode.isWall = false
-        let path = Astar(startNode, endNode)
-        // let path = bfs(startNode, endNode)
+        let astarpath = Astar(startNode, endNode)
+        let bfspath = bfs(startNode, endNode)
+        let dijkstrapath = Dijkstra(startNode, endNode)
         setTraversed(true)
-        setPath(path.path)
-        setVisitedNodes(path.visitedNodes)
-        if (path.error) {
+        setAstarPath(astarpath.path)
+        setBFSPath(bfspath.path)
+        setDijkstraPath(dijkstrapath.path)
+        setBFSVisitedNodes(bfspath.visitedNodes)
+        setAstarVisitedNodes(astarpath.visitedNodes)
+        setDijkstraVisitedNodes(dijkstrapath.visitedNodes)
+        if (astarpath.error) {
             console.log("No path found")
             setPathLen(null)
             return;
         }
-        setPathLen(path.path.length)
+        setPathLen(astarpath.path.length)
 
     };
 
@@ -129,8 +142,9 @@ const Pathfind = () => {
         setPathLen(shortestPathNodes.length)
     }
 
-    const visualizePath = () => {
-
+    const visualizeAlgorithm = (VisitedNodes, Path) => {
+        setDisableButton(true)
+        setDisableRefresh(true)
         for (let i = 0; i <= VisitedNodes.length; i++) {
             if (i === VisitedNodes.length) {
                 setTimeout(() => {
@@ -144,18 +158,32 @@ const Pathfind = () => {
             }
         }
         setTraversed(true)
-
+        const time = 25 * VisitedNodes.length
+        setTimeout(() => {
+            setDisableRefresh(false)
+        }, time)
     }
 
-    console.log(Path)
+    const visualizeAstar = () => {
+        visualizeAlgorithm(AstarVisitedNodes, AstarPath)
+    }
+
+    const visualizeDijkstra = () => {
+        visualizeAlgorithm(DijkstraVisitedNodes, DijkstraPath)
+    }
+
+    const visualizeBFS = () => {
+        visualizeAlgorithm(BFSVisitedNodes, BFSPath)
+    }
 
 
     return (
-        <div className="Wrapper">
-            <button className='square_btn' onClick={() => { window.location.reload() }}>Refresh</button>
-            <button className='square_btn' onClick={visualizePath}>Visualize path</button>
-            {/* <button onClick={moveStartHandler}>Change Start</button> */}
-            <h1>Pathfind component</h1>
+        <div className="Wrapper" align="center">
+            <button disabled={disableRefresh} className='btn btn-outline-primary btn-lg square_btn' onClick={() => { window.location.reload() }}>Refresh</button>
+            <button disabled={disableButton} className='btn btn-outline-primary btn-lg square_btn' onClick={visualizeAstar}>Visualize Astar</button>
+            <button disabled={disableButton} className='btn btn-outline-primary btn-lg square_btn' onClick={visualizeBFS}>Visualize BFS</button>
+            <button disabled={disableButton} className='btn btn-outline-primary btn-lg square_btn' onClick={visualizeDijkstra}>Visualize Dijkstra</button>
+            <h1 className="header">Pathfinding Visualiser</h1>
             {gridwithNode}
             {traversed && pathLen && <h1>Path length: {pathLen}</h1>}
             {traversed && !pathLen && <h1>No path found</h1>}
@@ -163,4 +191,4 @@ const Pathfind = () => {
     );
 };
 
-export default Pathfind;
+export default PathFind;

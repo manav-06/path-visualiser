@@ -1,5 +1,5 @@
 .Wrapper {
-    max-width: 80%;
+    max-width: 100%;
     margin: auto;
 }
 
@@ -12,15 +12,9 @@
     padding: 0.5em 1em;
     margin-top: 7px;
     margin-right: 8px;
-    text-decoration: none;
-    background: #668ad8;/*Button Color*/
-    color: #FFF;
-    border-bottom: solid 4px #627295;
-    border-radius: 3px;
+    
 }
-.square_btn:active {/*on Click*/
-    -ms-transform: translateY(4px);
-    -webkit-transform: translateY(4px);
-    transform: translateY(4px);/*Move down*/
-    border-bottom: none;/*disappears*/
+
+.header {
+    margin: 20px
 }
