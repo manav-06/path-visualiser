@@ -1,4 +1,4 @@
-# [Deploy URL](https://path-visualiser-a2cad.web.app/){:target="\_blank"}
+# <a href="https://path-visualiser-a2cad.web.app/" target="_blank">Deploy URL</a>
 
 # Getting Started with Create React App
 
