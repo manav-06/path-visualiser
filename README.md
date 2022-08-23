@@ -1,4 +1,4 @@
-# [Deploy URL](https://path-visualiser-a2cad.web.app/)
+# [Deploy URL](https://path-visualiser-a2cad.web.app/){:target="\_blank"}
 
 # Getting Started with Create React App
 
